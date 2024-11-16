@@ -12,10 +12,9 @@
     <!-- Firebase Integration -->
     <script type="module">
         // Import Firebase SDKs
-        // Firebase Configuration and Setup
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-        
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAeiC_4kQ1y2UxFZOZ4yUrYhCNn1eMzar0",
@@ -27,68 +26,39 @@
             appId: "1:123472636320:web:53286a18fb6fe356b15cc5",
             measurementId: "G-W1R362LRGQ"
         };
-        
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        
-        // Load Data from Firebase
+
+        // Load Gantt Data from Firebase
         function loadGanttData() {
             const dbRef = ref(database);
             get(child(dbRef, "ganttData"))
-                .then((snapshot) => {
+                .then(snapshot => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
-                        console.log("Loaded Data:", data); // Log the data to check if it's correctly loaded
-                        if (data) {
-                            gantt.parse(data); // Parse data into the Gantt chart
-                        } else {
-                            console.log("No valid data to load");
-                        }
+                        gantt.parse(data); // Load data into the Gantt chart
                     } else {
                         console.log("No data found in Firebase.");
                     }
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error("Error loading data from Firebase:", error);
                 });
         }
-        
-        // Initialize Gantt Chart
-        window.onload = function () {
-            gantt.config.date_format = "%Y-%m-%d"; // Date format
-            gantt.config.scale_unit = "week"; // Weekly scale
-            gantt.config.date_scale = "Week #%W"; // Week display
-            gantt.config.subscales = [{ unit: "month", step: 1, date: "%F %Y" }];
-            
-            gantt.config.columns = [
-                { name: "text", label: "Task Name", width: 250, tree: true },
-                { name: "start_date", label: "Start Date", align: "center", width: 100 },
-                { name: "duration", label: "Duration", align: "center", width: 80 },
-                { name: "progress", label: "Progress", align: "center", width: 80, template: (task) => Math.round(task.progress * 100) + "%" }
-            ];
-        
-            gantt.init("gantt_here"); // Initialize the Gantt chart
-        
-            loadGanttData(); // Load data from Firebase
-        
-            document.getElementById("saveBtn").addEventListener("click", function () {
-                saveGanttData();
-            });
-        };
-        
-        // Function to save data (if needed later)
+
+        // Save Gantt Data to Firebase
         function saveGanttData() {
             const data = gantt.serialize(); // Get the current Gantt chart data
             set(ref(database, "ganttData"), data)
                 .then(() => {
                     alert("Data saved to Firebase successfully!");
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error("Error saving data to Firebase:", error);
                 });
         }
-
 
         // Initialize Gantt Chart and Load Data
         window.onload = function () {
@@ -98,10 +68,10 @@
             gantt.config.subscales = [{ unit: "month", step: 1, date: "%F %Y" }];
 
             gantt.config.columns = [
-                { name: "text", label: "Task Name", width: 350, tree: true }, <!-- Increased width -->
-                { name: "start_date", label: "Start Date", align: "center", width: 100 },
-                { name: "duration", label: "Duration", align: "center", width: 80 },
-                { name: "progress", label: "Progress", align: "center", width: 80, template: task => Math.round(task.progress * 100) + "%" }
+                { name: "text", label: "Task Name", width: 365, tree: true },
+                { name: "start_date", label: "Start Date", align: "center" },
+                { name: "duration", label: "Duration", align: "center" },
+                { name: "progress", label: "Progress", align: "center", template: task => Math.round(task.progress * 100) + "%" }
             ];
 
             gantt.init("gantt_here"); // Initialize Gantt chart
