@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DensoRMF AMR</title>
+    <title>Gantt Chart</title>
 
-    <!-- Use local CSS -->
-    <link href="codebase/dhtmlxgantt.css" rel="stylesheet">
+    <!-- Local Gantt library -->
+    <link rel="stylesheet" href="codebase/dhtmlxgantt.css">
+    <script src="codebase/dhtmlxgantt.js"></script>
 
     <style>
         html, body {
@@ -15,14 +16,12 @@
             padding: 0;
             overflow: hidden;
         }
-
         #gantt_here {
             width: 100%;
             height: 90%;
         }
-
         button {
-            margin: 5px;
+            margin: 10px;
             padding: 10px;
             background-color: #007BFF;
             color: white;
@@ -30,30 +29,19 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #0056b3;
-        }
-
-        /* Style for completed tasks */
-        .completed-task .gantt_task_content {
-            text-decoration: line-through;
-            color: gray;
-        }
-
-        .completed-task .gantt_row {
-            text-decoration: line-through;
-            color: gray;
         }
     </style>
 </head>
 <body>
+    <div id="toolbar">
+        <button onclick="addTask()">+ New Task</button>
+        <button onclick="addSubTask()">+ New Subtask</button>
+        <button id="saveBtn">Save</button>
+    </div>
     <div id="gantt_here"></div>
-    <button id="saveBtn">Save</button>
-    <button id="loadBtn">Load</button>
 
-    <!-- Use local JS -->
-    <script src="codebase/dhtmlxgantt.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
