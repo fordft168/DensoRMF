@@ -3,34 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DensoRMF AMR</title>
+    <title>Gantt Chart with Firebase</title>
 
-    <!-- Local Gantt library -->
+    <!-- Include DHTMLX Gantt CSS and JS -->
     <link rel="stylesheet" href="codebase/dhtmlxgantt.css">
     <script src="codebase/dhtmlxgantt.js"></script>
 
+    <!-- Firebase Integration -->
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAeiC_4kQ1y2UxFZOZ4yUrYhCNn1eMzar0",
+            authDomain: "densormf.firebaseapp.com",
+            databaseURL: "https://densormf-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "densormf",
+            storageBucket: "densormf.appspot.com",
+            messagingSenderId: "123472636320",
+            appId: "1:123472636320:web:53286a18fb6fe356b15cc5",
+            measurementId: "G-W1R362LRGQ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Load Gantt Data from Firebase
+        function loadGanttData() {
+            const dbRef = ref(database);
+            get(child(dbRef, "ganttData"))
+                .then(snapshot => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        gantt.parse(data); // Load data into the Gantt chart
+                    } else {
+                        console.log("No data found in Firebase.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error loading data from Firebase:", error);
+                });
+        }
+
+        // Save Gantt Data to Firebase
+        function saveGanttData() {
+            const data = gantt.serialize(); // Get the current Gantt chart data
+            set(ref(database, "ganttData"), data)
+                .then(() => {
+                    alert("Data saved to Firebase successfully!");
+                })
+                .catch(error => {
+                    console.error("Error saving data to Firebase:", error);
+                });
+        }
+
+        // Initialize Gantt Chart and Load Data
+        window.onload = function () {
+            gantt.config.date_format = "%Y-%m-%d"; // Date format for tasks
+            gantt.config.scale_unit = "week"; // Scale by weeks
+            gantt.config.date_scale = "Week #%W"; // Show week numbers
+            gantt.config.subscales = [{ unit: "month", step: 1, date: "%F %Y" }];
+
+            gantt.config.columns = [
+                { name: "text", label: "Task Name", width: 250, tree: true },
+                { name: "start_date", label: "Start Date", align: "center" },
+                { name: "duration", label: "Duration", align: "center" },
+                { name: "progress", label: "Progress", align: "center", template: task => Math.round(task.progress * 100) + "%" }
+            ];
+
+            gantt.init("gantt_here"); // Initialize Gantt chart
+            loadGanttData(); // Load data from Firebase
+
+            // Save Button Click Event
+            document.getElementById("saveBtn").addEventListener("click", saveGanttData);
+        };
+    </script>
+
     <style>
         html, body {
-            height: 100%;
             margin: 0;
             padding: 0;
+            height: 100%;
             overflow: hidden;
         }
         #gantt_here {
             width: 100%;
-            height: 90%;
+            height: calc(100% - 50px);
         }
-        button {
-            margin: 10px;
+        #toolbar {
+            display: flex;
+            justify-content: space-between;
             padding: 10px;
             background-color: #007BFF;
+        }
+        #toolbar button {
+            padding: 10px 20px;
             color: white;
+            background-color: #0056b3;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #0056b3;
+        #toolbar button:hover {
+            background-color: #003f7f;
         }
     </style>
 </head>
@@ -41,7 +119,36 @@
         <button id="saveBtn">Save</button>
     </div>
     <div id="gantt_here"></div>
-
-    <script src="script.js"></script>
 </body>
+<script>
+    // Add a new task
+    function addTask() {
+        const id = gantt.uid();
+        gantt.addTask({
+            id: id,
+            text: "New Task",
+            start_date: gantt.date.date_to_str(gantt.config.date_format)(new Date()),
+            duration: 5,
+            progress: 0
+        });
+    }
+
+    // Add a new subtask
+    function addSubTask() {
+        const selectedTask = gantt.getSelectedId();
+        if (!selectedTask) {
+            alert("Please select a task to add a subtask.");
+            return;
+        }
+        const id = gantt.uid();
+        gantt.addTask({
+            id: id,
+            text: "New Subtask",
+            start_date: gantt.date.date_to_str(gantt.config.date_format)(new Date()),
+            duration: 3,
+            progress: 0,
+            parent: selectedTask
+        });
+    }
+</script>
 </html>
