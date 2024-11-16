@@ -86,16 +86,30 @@ if (localStorage.getItem("ganttData")) {
 } else {
     // Add initial project tasks
     gantt.parse({
-        data: [
-            { id: 1, text: "Basic Design (ออกแบบพื้นฐาน)", start_date: formatDate(startDate), duration: 30, progress: 0.5, done: false },
-            { id: 2, text: "Basic Part Order (สั่งซื้อ)", start_date: formatDate(new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000)), duration: 20, progress: 0.2, done: false, parent: 1 },
-            { id: 3, text: "Basic Assembly (ประกอบพื้นฐาน)", start_date: formatDate(new Date(startDate.getTime() + 50 * 24 * 60 * 60 * 1000)), duration: 30, progress: 0.1, done: false },
-        ],
-        links: [
-            { id: 1, source: 1, target: 2, type: "0" },
-            { id: 2, source: 2, target: 3, type: "0" }
-        ]
-    });
+    data: [
+        { id: 1, text: "Basic Design (ออกแบบพื้นฐาน)", start_date: formatDate(startDate), duration: 30, progress: 0.5, done: false },
+        { id: 2, text: "Basic Part Order (สั่งซื้อ)", start_date: formatDate(new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000)), duration: 20, progress: 0.2, done: false, parent: 1 },
+        { id: 3, text: "Basic Assembly (ประกอบพื้นฐาน)", start_date: formatDate(new Date(startDate.getTime() + 50 * 24 * 60 * 60 * 1000)), duration: 30, progress: 0.1, done: false },
+        { id: 4, text: "Coding (เขียนโปรแกรมเบื้องต้น)", start_date: formatDate(new Date(startDate.getTime() + 80 * 24 * 60 * 60 * 1000)), duration: 40, progress: 0.0, done: false },
+        { id: 5, text: "First Test (ทดสอบครั้งแรก)", start_date: formatDate(new Date(startDate.getTime() + 120 * 24 * 60 * 60 * 1000)), duration: 20, progress: 0.0, done: false },
+        { id: 6, text: "Identify Missing Hardware (ค้นหาชิ้นส่วนที่ขาด)", start_date: formatDate(new Date(startDate.getTime() + 140 * 24 * 60 * 60 * 1000)), duration: 10, progress: 0.0, done: false },
+        { id: 7, text: "Secondary Assembly (การประกอบเพิ่มเติม)", start_date: formatDate(new Date(startDate.getTime() + 150 * 24 * 60 * 60 * 1000)), duration: 30, progress: 0.0, done: false },
+        { id: 8, text: "Advanced Coding (ปรับปรุงโปรแกรม)", start_date: formatDate(new Date(startDate.getTime() + 180 * 24 * 60 * 60 * 1000)), duration: 40, progress: 0.0, done: false },
+        { id: 9, text: "Test and Debug (ทดสอบและแก้ไขข้อผิดพลาด)", start_date: formatDate(new Date(startDate.getTime() + 220 * 24 * 60 * 60 * 1000)), duration: 30, progress: 0.0, done: false },
+        { id: 10, text: "Redesign and Iteration (ปรับปรุงและวนรอบ)", start_date: formatDate(new Date(startDate.getTime() + 250 * 24 * 60 * 60 * 1000)), duration: 50, progress: 0.0, done: false }
+    ],
+    links: [
+        { id: 1, source: 1, target: 2, type: "0" },
+        { id: 2, source: 2, target: 3, type: "0" },
+        { id: 3, source: 3, target: 4, type: "0" },
+        { id: 4, source: 4, target: 5, type: "0" },
+        { id: 5, source: 5, target: 6, type: "0" },
+        { id: 6, source: 6, target: 7, type: "0" },
+        { id: 7, source: 7, target: 8, type: "0" },
+        { id: 8, source: 8, target: 9, type: "0" },
+        { id: 9, source: 9, target: 10, type: "0" }
+    ]
+});
 }
 
 // Save Gantt data to localStorage
