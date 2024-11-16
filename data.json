@@ -1,0 +1,13 @@
+{
+    "data": [
+        { "id": 1, "text": "Project Start", "start_date": "2024-11-01", "duration": 5, "progress": 0.6 },
+        { "id": 2, "text": "Task 1", "start_date": "2024-11-06", "duration": 3, "progress": 0.4, "parent": 1 },
+        { "id": 3, "text": "Task 2", "start_date": "2024-11-10", "duration": 7, "progress": 0.3 },
+        { "id": 4, "text": "Final Task", "start_date": "2024-11-18", "duration": 10, "progress": 0.2 }
+    ],
+    "links": [
+        { "id": 1, "source": 1, "target": 2, "type": "0" },
+        { "id": 2, "source": 2, "target": 3, "type": "0" },
+        { "id": 3, "source": 3, "target": 4, "type": "0" }
+    ]
+}
