@@ -1,5 +1,5 @@
 // Replace with the raw URL of your data.json file on GitHub
-const githubDataUrl = "https://raw.githubusercontent.com/your-username/your-repo/main/data.json";
+const githubDataUrl = "https://raw.githubusercontent.com/fordft168/DensoRMF/refs/heads/main/data.json";
 
 // Fetch data from GitHub and initialize the Gantt chart
 fetch(githubDataUrl)
