@@ -68,10 +68,10 @@
             gantt.config.subscales = [{ unit: "month", step: 1, date: "%F %Y" }];
 
             gantt.config.columns = [
-                { name: "text", label: "Task Name", width: 250, tree: true },
-                { name: "start_date", label: "Start Date", align: "center" },
-                { name: "duration", label: "Duration", align: "center" },
-                { name: "progress", label: "Progress", align: "center", template: task => Math.round(task.progress * 100) + "%" }
+                { name: "text", label: "Task Name", width: 350, tree: true }, <!-- Increased width -->
+                { name: "start_date", label: "Start Date", align: "center", width: 100 },
+                { name: "duration", label: "Duration", align: "center", width: 80 },
+                { name: "progress", label: "Progress", align: "center", width: 80, template: task => Math.round(task.progress * 100) + "%" }
             ];
 
             gantt.init("gantt_here"); // Initialize Gantt chart
